@@ -48,7 +48,16 @@ const RELATED_PANEL_GUTTER_PX = 248;
 /** 骨架离那块屏的边至少这么远。 */
 const SCREEN_INSET_PX = 20;
 
-const readViewport = () => ({ width: window.innerWidth, height: window.innerHeight });
+// Layout the tutorial inside the control-safe window while its veil still covers the full scene.
+const readViewport = () => {
+    const root = document.documentElement;
+    const style = root.dataset.android === 'true' ? getComputedStyle(root) : null;
+    const inset = (edge: string) => parseFloat(style?.getPropertyValue('--folia-native-safe-' + edge) || '') || 0;
+    return {
+        width: Math.max(1, window.innerWidth - inset('left') - inset('right')),
+        height: Math.max(1, window.innerHeight - inset('top') - inset('bottom')),
+    };
+};
 
 /** 时间线重建的那一刻（窗口变了）用户是不是停着的。 */
 const readPaused = () => usePonderStore.getState().isPaused;
@@ -301,7 +310,7 @@ const PonderStage: React.FC<PonderStageProps> = ({ theme, isDaylight }) => {
             aria-modal="true"
             aria-label={t(target.titleKey)}
         >
-            <div className="st-window absolute inset-0 text-[color:var(--st-t1)]" style={ponderWindowTokens(isDaylight, theme, calm)}>
+            <div className="android-ponder-window st-window absolute inset-0 text-[color:var(--st-t1)]" style={ponderWindowTokens(isDaylight, theme, calm)}>
                 <SettingsKitThemeContext.Provider value={kitTheme}>
                     {/* 画面：一块屏，骨架和会动的那几个都画在它上面。位移和缩放只挂在这一层：底衬要一直铺满，
                         跟着缩会在四边露出没盖住的真实界面；外框那几处只跟着底衬淡入。 */}

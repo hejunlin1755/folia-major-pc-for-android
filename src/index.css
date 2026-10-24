@@ -481,3 +481,21 @@ html[data-android='true'] .android-ponder-button {
     top: calc(20px + var(--folia-native-safe-top, 0px));
     right: calc(20px + var(--folia-native-safe-right, 0px));
 }
+
+/* Full-screen dialog backdrops bleed underneath the cutout; their interactive windows stay inside it. */
+html[data-android='true'] .android-ponder-window {
+    top: var(--folia-native-safe-top, 0px);
+    bottom: var(--folia-native-safe-bottom, 0px);
+    left: var(--folia-native-safe-left, 0px);
+    right: var(--folia-native-safe-right, 0px);
+}
+html[data-android='true'] .android-settings-overlay {
+    padding-top: calc(12px + var(--folia-native-safe-top, 0px));
+    padding-bottom: calc(12px + var(--folia-native-safe-bottom, 0px));
+    padding-left: calc(12px + var(--folia-native-safe-left, 0px));
+    padding-right: calc(12px + var(--folia-native-safe-right, 0px));
+}
+html[data-android='true'] .android-settings-overlay > [role='dialog'] {
+    min-height: 0;
+    max-height: 100%;
+}

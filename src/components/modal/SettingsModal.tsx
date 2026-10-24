@@ -1160,7 +1160,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             transition={shellTransition}
             data-folia-keyboard-window="true"
             data-ponder-page-scope={activeTab === 'help' ? 'help-page' : 'settings-page'}
-            className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-8 sm:px-5 sm:py-12"
+            className="android-settings-overlay fixed inset-0 z-[100] flex items-center justify-center px-4 py-8 sm:px-5 sm:py-12"
             style={{ backgroundColor: overlayBackground }}
             onMouseDown={handleOverlayMouseDown}
             onClick={(event) => handleBackdropClose(event, onClose)}
