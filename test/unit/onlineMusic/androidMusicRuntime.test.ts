@@ -52,4 +52,20 @@ describe('Android music request bridge', () => {
         expect(runtime.getAndroidMusicApiBase('qq')).toBeNull();
         expect(globalThis.fetch).toBe(browserFetch);
     });
+    it('allows a new attempt after startup failed while sharing each in-flight attempt', async () => {
+        const nativePromise = vi.fn().mockRejectedValueOnce(new Error('ANDROID_MUSIC_BACKEND_UNAVAILABLE: startup-timeout')).mockResolvedValue({ ready: true });
+        vi.stubGlobal('Capacitor', { getPlatform: () => 'android', nativePromise });
+        const runtime = await import('../../../src/services/androidMusicRuntime');
+        const first = runtime.waitForAndroidMusicRuntime();
+        expect(runtime.waitForAndroidMusicRuntime()).toBe(first);
+        await expect(first).rejects.toMatchObject({ code: runtime.ANDROID_MUSIC_BACKEND_UNAVAILABLE });
+        await expect(runtime.waitForAndroidMusicRuntime()).resolves.toBeUndefined();
+        expect(nativePromise).toHaveBeenCalledTimes(2);
+    });
+    it('exposes only recognized native startup reasons', async () => {
+        const { getAndroidMusicStartupReason } = await import('../../../src/services/androidMusicRuntime');
+        expect(getAndroidMusicStartupReason(new Error('ANDROID_MUSIC_BACKEND_UNAVAILABLE: native-library'))).toBe('native-library');
+        expect(getAndroidMusicStartupReason(new Error('ANDROID_MUSIC_BACKEND_UNAVAILABLE: engine-module-not-found'))).toBe('engine-module-not-found');
+        expect(getAndroidMusicStartupReason(new Error('Unexpected request text'))).toBeUndefined();
+    });
 });

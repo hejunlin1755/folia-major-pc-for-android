@@ -138,6 +138,11 @@ if (require.main === module) {
         const temporary = readyFile + '.tmp';
         fs.writeFileSync(temporary, JSON.stringify({ port: server.address().port }), { mode: 0o600 });
         fs.renameSync(temporary, readyFile);
-    }).catch(() => { fs.writeFileSync(readyFile + '.error', 'Built-in music service initialization failed'); process.exitCode = 1; });
+    }).catch(error => {
+        // Persist a non-sensitive machine-readable reason, never request payloads or account state.
+        const code = /^[A-Z][A-Z0-9_]+$/.test(error?.code || '') ? error.code : 'INITIALIZATION_FAILED';
+        fs.writeFileSync(readyFile + '.error', code);
+        process.exitCode = 1;
+    });
 }
 module.exports = { createGateway, createProviders, allowedProxyTarget };

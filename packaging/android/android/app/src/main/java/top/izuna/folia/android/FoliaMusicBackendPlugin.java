@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 // Exposes app-private requests, never the local authentication key or an arbitrary network destination.
 @CapacitorPlugin(name = "FoliaMusicBackend")
@@ -21,9 +22,14 @@ public class FoliaMusicBackendPlugin extends Plugin {
     private final ExecutorService requests = Executors.newFixedThreadPool(6);
     @Override public void load() { NodeMusicRuntime.ready(getContext()); }
     @PluginMethod public void ready(PluginCall call) {
-        NodeMusicRuntime.ready(getContext()).whenComplete((endpoint, error) -> {
-            if (error != null) call.reject("ANDROID_MUSIC_BACKEND_UNAVAILABLE");
-            else { JSObject result = new JSObject(); result.put("ready", true); call.resolve(result); }
+        requests.execute(() -> {
+            try {
+                NodeMusicRuntime.ready(getContext()).get(80, TimeUnit.SECONDS);
+                JSObject result = new JSObject(); result.put("ready", true); call.resolve(result);
+            } catch (Exception error) {
+                String reason = NodeMusicRuntime.failureReason(error);
+                call.reject("ANDROID_MUSIC_BACKEND_UNAVAILABLE: " + reason, reason);
+            }
         });
     }
     @PluginMethod public void request(PluginCall call) {
@@ -42,7 +48,10 @@ public class FoliaMusicBackendPlugin extends Plugin {
                 String body;
                 try (InputStream stream = status >= 400 ? connection.getErrorStream() : connection.getInputStream()) { body = stream == null ? "" : new String(NodeMusicRuntime.readAll(stream), StandardCharsets.UTF_8); }
                 JSObject result = new JSObject(); result.put("status", status); result.put("headers", responseHeaders); result.put("body", body); call.resolve(result);
-            } catch (Exception error) { call.reject("ANDROID_MUSIC_BACKEND_UNAVAILABLE: " + error.getClass().getSimpleName()); }
+            } catch (Exception error) {
+                String reason = NodeMusicRuntime.failureReason(error);
+                call.reject("ANDROID_MUSIC_BACKEND_UNAVAILABLE: " + reason, reason);
+            }
             finally { if (connection != null) connection.disconnect(); }
         });
     }

@@ -36,7 +36,7 @@ if (!fs.existsSync(path.join(runtime, '.verified'))) {
 }
 const entries = {};
 function collect(location, prefix = '') {
-    for (const item of fs.readdirSync(location, { withFileTypes: true })) {
+    for (const item of fs.readdirSync(location, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name, 'en'))) {
         if (item.name === '.bin' || item.isSymbolicLink()) continue;
         const name = prefix + item.name;
         if (item.isDirectory()) collect(path.join(location, item.name), name + '/');
@@ -44,7 +44,8 @@ function collect(location, prefix = '') {
     }
 }
 collect(backend);
-const zip = zipSync(entries, { level: 6 });
+// Fixed ZIP timestamps keep unchanged services reusable across APK upgrades.
+const zip = zipSync(entries, { level: 6, mtime: new Date(2000, 0, 1, 0, 0, 0) });
 const assets = path.join(directory, 'android/app/src/main/assets');
 fs.mkdirSync(assets, { recursive: true });
 fs.writeFileSync(path.join(assets, 'music-backend.zip'), zip);

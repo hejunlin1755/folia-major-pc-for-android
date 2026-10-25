@@ -1,4 +1,4 @@
-import { ANDROID_MUSIC_BACKEND_UNAVAILABLE } from '../../androidMusicRuntime';
+import { ANDROID_MUSIC_BACKEND_UNAVAILABLE, getAndroidMusicStartupReason } from '../../androidMusicRuntime';
 import { OnlineProviderError } from '../../../types/onlineMusic';
 import type { LoginFailureDetail, LoginStep } from '../../../types/onlineMusic';
 import { QQ_API_NOT_RUNNING } from './qqTransport';
@@ -9,7 +9,10 @@ import { qqStatusFailure } from './qqFailure';
 
 // 登录的某一步抛了错（都出自 qqTransport.ts 的 requestQq）。
 export const describeQqLoginFailure = (_step: LoginStep, error: unknown): LoginFailureDetail | null => {
-    if (error instanceof Error && error.message.includes(ANDROID_MUSIC_BACKEND_UNAVAILABLE)) return { case: 'local-service-unavailable' };
+    if (error instanceof Error && error.message.includes(ANDROID_MUSIC_BACKEND_UNAVAILABLE)) {
+        const code = getAndroidMusicStartupReason(error);
+        return { case: 'local-service-unavailable', ...(code ? { code } : {}) };
+    }
     // 请求是裸 fetch：连不上时它抛 TypeError。
     if (error instanceof TypeError) return { case: 'unreachable' };
     if (!(error instanceof OnlineProviderError)) return null;

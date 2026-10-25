@@ -15,6 +15,11 @@ export function getAndroidMusicMediaUrl(value: string, domain: string): string {
     } catch { /* Leave invalid candidates to the normal playback validator. */ }
     return value;
 }
+// Surface only our own startup-stage codes; never include account data in the login details.
+export function getAndroidMusicStartupReason(error: unknown): string | undefined {
+    if (!(error instanceof Error)) return undefined;
+    return /ANDROID_MUSIC_BACKEND_UNAVAILABLE:\s*(unpack|native-library|engine-[a-z-]+|startup-timeout|local-connection)(?=[:\s]|$)/.exec(error.message)?.[1];
+}
 let installed = false;
 let startup: Promise<void> | null = null;
 
@@ -22,6 +27,7 @@ let startup: Promise<void> | null = null;
 export function waitForAndroidMusicRuntime(): Promise<void> {
     if (!isAndroidMusicRuntime()) return Promise.resolve();
     if (!startup) startup = getBridge()!.nativePromise!('FoliaMusicBackend', 'ready', {}).then(() => undefined).catch(error => {
+        startup = null;
         throw Object.assign(new Error(`${ANDROID_MUSIC_BACKEND_UNAVAILABLE}: ${error instanceof Error ? error.message : 'Startup failed'}`), { code: ANDROID_MUSIC_BACKEND_UNAVAILABLE });
     });
     return startup;
