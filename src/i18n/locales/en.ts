@@ -1,6 +1,17 @@
 
 
 export default {
+  "displayScale": {
+    "title": "Interface scale",
+    "hint": "Scale text, buttons and spacing together. Apply to preview.",
+    "reset": "Reset to 100%",
+    "apply": "Apply scale",
+    "current": "Current scale: {{value}}%",
+    "welcome": "Choose your interface size",
+    "intro": "Find a comfortable size before you start. Change it later in Settings → Appearance → Interface scale.",
+    "sample": "Text and playback button preview",
+    "continue": "Get started"
+},
   "libraryBravais": {
     "suiteName": "Bravais wall",
     "homeTitle": "Library",
@@ -573,6 +584,7 @@ export default {
       }
     },
     "commands": {
+      "settings-display-scale": {"title":"Interface scale","description":"Adjust the Android interface size"},
       "settings-ponder-hints": { "title": "Ponder tutorial hints", "description": "Choose when the hold-G tutorial hint appears" },
       "ponder-hints-always": { "title": "Ponder hints: always show", "description": "Show the hold-G hint on every teachable control" },
       "ponder-hints-unseen": { "title": "Ponder hints: only where I have not looked", "description": "Stop hinting a control once its tutorial has been watched" },

@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer';
+import { installAndroidDisplayScale } from './services/androidDisplayScale';
 import { installAndroidMusicRuntime } from './services/androidMusicRuntime';
 import { installGlobalVisualizerFrameRateLimiter } from './utils/frameRateLimiter';
 import { installConsoleLogCapture } from './utils/consoleLogBuffer';
@@ -24,4 +25,5 @@ installMemorySampleFeed();
 installGlobalVisualizerFrameRateLimiter();
 
 installAndroidMusicRuntime();
+installAndroidDisplayScale();
 void import('./bootstrap');

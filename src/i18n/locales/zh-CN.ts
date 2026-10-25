@@ -1,6 +1,17 @@
 
 
 export default {
+  "displayScale": {
+    "title": "界面缩放",
+    "hint": "文字、按钮和间距一起缩放；点击应用后预览。",
+    "reset": "恢复 100%",
+    "apply": "应用比例",
+    "current": "当前比例：{{value}}%",
+    "welcome": "选择适合你的界面大小",
+    "intro": "先调整到舒适的大小，再开始使用。之后可在「设置 → 外观 → 界面缩放」中修改。",
+    "sample": "文字与播放按钮预览",
+    "continue": "开始使用"
+},
   "libraryBravais": {
     "suiteName": "Bravais 墙面",
     "homeTitle": "书库",
@@ -573,6 +584,7 @@ export default {
       }
     },
     "commands": {
+      "settings-display-scale": {"title":"界面缩放","description":"调整安卓界面的显示比例"},
       "settings-ponder-hints": { "title": "思索教程提示", "description": "设置长按 G 的提示什么时候出现" },
       "ponder-hints-always": { "title": "思索提示：始终显示", "description": "所有可教学的控件都提示长按 G" },
       "ponder-hints-unseen": { "title": "思索提示：仅未看过的区域", "description": "某个控件的教程看过之后就不再提示它" },

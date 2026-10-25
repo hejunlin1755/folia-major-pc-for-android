@@ -9,6 +9,7 @@ import type { SettingsSubviewId } from '../../../../stores/useSettingsModalStore
 // out where the page does not draw it (kit/options.ts); the table says nothing about either.
 
 export const SETTINGS_ANCHOR_DEFINITIONS = {
+    displayScaleSettings: { section: 'appearance' },
     // pages/AppearancePage
     lyricsRenderer: { section: 'appearance' },
     themePresets: { section: 'appearance' },

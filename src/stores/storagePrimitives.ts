@@ -26,3 +26,7 @@ export const getStoredString = (key: string, fallback: string) => {
 
     return localStorage.getItem(key) || fallback;
 };
+
+export const setStoredString = (key: string, value: string) => {
+    if (typeof window !== 'undefined') localStorage.setItem(key, value);
+};

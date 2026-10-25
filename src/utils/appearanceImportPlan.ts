@@ -4,6 +4,7 @@ import {
     type ThemePreferenceSwitchState,
 } from '../services/themePreferences';
 import { mergeUrlBackgroundList } from './urlBackground';
+import { normalizeDisplayScale } from './displayScale';
 import { normalizeFontWeight } from './fontStacks';
 import type { UrlBackgroundItem } from '../types';
 
@@ -68,6 +69,7 @@ export const ACTIVATE_CUSTOM_THEME_KEY = 'activateCustomTheme';
 // Fields the codec round-trips but the import path does not apply are deliberately absent, so the
 // plan can never promise a change that will not happen.
 const FIELD_GROUPS: Record<string, ImportGroup> = {
+    displayScale: 'fonts',
     visualizerMode: 'visualizer',
     randomVisualizerModePerSong: 'visualizer',
     visualizerOpacity: 'visualizer',
@@ -458,6 +460,11 @@ export function buildImportPlan({
 
         const change: ImportChange = { group, key, from: current[key], to: incoming[key] };
         let same = isSameValue(incoming[key], current[key]);
+        if (key === 'displayScale') {
+            change.to = normalizeDisplayScale(incoming[key]);
+            record(change, isSameValue(change.to, current[key]));
+            continue;
+        }
 
         // A settings object is judged by its leaves, not by isSameValue. That compare is
         // JSON.stringify-based and so key-order sensitive, while the incoming object is rebuilt by

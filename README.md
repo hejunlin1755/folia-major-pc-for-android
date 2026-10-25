@@ -1,14 +1,18 @@
 # Folia Android
 
-Folia Android 是面向手机和平板的 Folia 社区安卓移植。**最大的特点是手机独立运行：网易云、酷狗和 QQ 音乐 API 直接内置在 APK 中，无需自行部署服务器、保持电脑开机或填写 API 地址。** 安装后即可在应用内登录和使用在线音乐，并支持原生后台播放、通知栏与锁屏控制、沉浸全屏和系统返回导航。
+Folia Android 是面向手机和平板的 Folia 社区安卓移植。**最大的特点是手机独立运行：网易云、酷狗和 QQ 音乐 API 直接内置在 APK 中，无需自行部署服务器、保持电脑开机或填写 API 地址。** 安装后即可在应用内登录和使用在线音乐，并支持原生后台播放、通知栏与锁屏控制、沉浸全屏和系统返回导航。首次进入可通过滑杆选择 **35%～150% 的界面比例**，也可随时在「设置 → 外观 → 界面缩放」调整。
 
-[**下载 Android APK · android.12**](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.21-android.12) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
+[**下载 Android APK · android.13**](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.21-android.13) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
 
 支持 Android 7 及以上、Android System WebView 120 及以上，安装包包含 ARM64 / ARMv7 / x86_64。在线听歌仍需要联网，会员和版权规则由音乐平台决定。
 
 ## 安卓实测截图
 
 以下截图来自 Android 15 模拟器中的实际操作。
+
+**界面缩放滑杆**：首次进入可选 35%～150%，设置中可随时修改。
+
+<img src="img/android-display-scale.png" alt="Folia 首次进入的界面缩放滑杆" width="260" /> <img src="img/android-display-scale-settings.png" alt="Folia 设置页的界面缩放滑杆" width="260" />
 
 **系统锁屏播放控制**：显示歌名、歌手和封面，可暂停、恢复、切歌及调整进度。
 
@@ -66,7 +70,7 @@ Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，
 ## 快速下载
 
 > [!TIP]
-> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.21-android.12)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
+> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.21-android.13)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
 > - **GitHub**：[Latest Release](https://github.com/chthollyphile/folia-major/releases/latest)，提供 Windows / macOS / Linux 全平台安装包。
 > - **网盘**：[夸克网盘](https://pan.quark.cn/s/6e4c6fa3bc6f) · [百度云](https://pan.baidu.com/s/1f0x3g-8PMcNCO-TJ5z1rPw?pwd=flia)（提取码 `flia`），适合国内网络，仅提供 Windows 与 Apple silicon 的正式版安装包。
 >

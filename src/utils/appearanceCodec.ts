@@ -518,6 +518,7 @@ export const compressConfig = (config: any): string => {
             d: compressTheme(config.theme.dark),
         };
     }
+    if (config.displayScale !== undefined) minified.uis = config.displayScale;
     if (config.visualizerMode) minified.vm = config.visualizerMode;
     if (config.randomVisualizerModePerSong !== undefined) minified.rvms = config.randomVisualizerModePerSong;
     if (config.visualizerBackgroundMode) minified.vbm = config.visualizerBackgroundMode;
@@ -615,6 +616,7 @@ export const decompressConfig = (str: string): any => {
 
     const isMinified = isCompressedShortcode
         || parsed.t !== undefined
+        || parsed.uis !== undefined
         || parsed.vm !== undefined
         || parsed.rvms !== undefined
         || parsed.ccb !== undefined
@@ -660,6 +662,7 @@ export const decompressConfig = (str: string): any => {
                 dark: decompressTheme(parsed.t.d),
             };
         }
+        if (parsed.uis !== undefined) decompressed.displayScale = parsed.uis;
         if (parsed.vm) decompressed.visualizerMode = parsed.vm;
         if (parsed.rvms !== undefined) decompressed.randomVisualizerModePerSong = parsed.rvms;
         if (parsed.vbm) decompressed.visualizerBackgroundMode = parsed.vbm;
@@ -731,7 +734,7 @@ export const decompressConfig = (str: string): any => {
         // Frozen: the 13 lyric-style tunings in this list predate the visualizerTunings bundle, which carries any
         // new style. Do not add a lyric style here.
         const validKeys = [
-            'theme', 'visualizerMode', 'randomVisualizerModePerSong', 'visualizerBackgroundMode', 'backgroundOpacity',
+            'displayScale', 'theme', 'visualizerMode', 'randomVisualizerModePerSong', 'visualizerBackgroundMode', 'backgroundOpacity',
             'useCoverColorBg', 'disableVisualizerGeometricBackground', 'disableVisualizerVignette', 'staticMode',
             'visualizerOpacity', 'hidePlayerTranslationSubtitle', 'showSubtitleTranslation', 'subtitleContentMode',
             'subtitleOverlayBackground', 'subtitleUpcomingLyricsBlur', 'subtitleOverlayOpacity',

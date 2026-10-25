@@ -1,3 +1,4 @@
+import { isAndroidMusicRuntime } from '../../../services/androidMusicRuntime';
 import { syncNow } from '../../../services/sync/syncCoordinator';
 import { isSyncConfigured } from '../../../services/sync/syncConfig';
 import { buildObsCustomCss } from '../../../services/obs/obsCustomCss';
@@ -19,6 +20,7 @@ import { copyText } from '../../../utils/system/clipboard';
 // Commands in the `settings` group: settings subviews, app toggles, theme, sync, and desktop-only switches.
 
 export const settingsCommands: CommandPaletteCommand[] = [
+    { ...createSettingsAnchorCommand('settings-display-scale', 'Interface scale', 'Adjust the Android interface size', ['display zoom', 'screen size', '界面缩放', '显示比例'], 'displayScaleSettings'), isAvailable: isAndroidMusicRuntime },
     createSettingsCommand('settings-help', 'Open Help', 'Open help and shortcuts', ['help', '帮助'], 'help', null, { executeShortcut: 'h' }),
     {
         id: 'ponder-current-page',

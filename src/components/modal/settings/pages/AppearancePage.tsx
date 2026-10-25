@@ -1,4 +1,6 @@
 import React from 'react';
+import { DisplayScaleControl } from '../../../app/display-scale/DisplayScaleControl';
+import { isAndroidMusicRuntime } from '../../../../services/androidMusicRuntime';
 import { Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/react/shallow';
@@ -19,12 +21,14 @@ import { useSettingsPage, type AiApiKeyName } from './settingsPageContext';
 // The lyric animation workbench and the theme colour editor are the existing overlays; their rows
 // here only open them.
 
+const DISPLAY: SettingsGroupDef = { id: 'displayScaleSettings', titleKey: 'displayScale.title', available: isAndroidMusicRuntime };
 const LYRICS: SettingsGroupDef = { id: 'lyricsRenderer', titleKey: 'options.lyricsRenderer' };
 const THEME: SettingsGroupDef = { id: 'themePresets', titleKey: 'options.settingsHeadingTheme' };
 const SONG_THEME: SettingsGroupDef = { id: 'songTheme', titleKey: 'options.settingsHeadingSongTheme' };
 const AI: SettingsGroupDef = { id: 'electronSettings', titleKey: 'options.electronSettings', electronOnly: true };
 
 const O = {
+    displayScale: option(DISPLAY, 'androidDisplayScale', 'displayScale.title'),
     lyricsAnimation: option(LYRICS, 'lyricsAnimationAdjust', 'options.lyricsAnimationAdjust'),
     daylight: option(THEME, 'daylightMode', 'options.daylightMode'),
     preset: option(THEME, 'themePreset', 'options.themePresets'),
@@ -107,6 +111,7 @@ const AppearancePage: React.FC = () => {
 
     return (
         <>
+            {isAndroidMusicRuntime() && <Group def={DISPLAY}><DisplayScaleControl option={O.displayScale} /></Group>}
             <Group def={LYRICS} bare>
                 {nativeBlurEnabled && <Row notice={t('options.nativeBlurBackgroundNotice')} />}
                 <Row option={O.lyricsAnimation} hint={t('options.lyricsRendererDesc')} onClick={onOpenVisPlayground}>

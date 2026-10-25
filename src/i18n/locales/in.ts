@@ -1,6 +1,17 @@
 
 
 export default {
+  "displayScale": {
+    "title": "Skala antarmuka",
+    "hint": "Ubah ukuran teks, tombol, dan jarak bersama. Terapkan untuk melihat hasilnya.",
+    "reset": "Atur ulang 100%",
+    "apply": "Terapkan skala",
+    "current": "Skala saat ini: {{value}}%",
+    "welcome": "Pilih ukuran antarmuka",
+    "intro": "Atur ukuran yang nyaman sebelum mulai. Ubah lagi di Pengaturan → Tampilan → Skala antarmuka.",
+    "sample": "Pratinjau teks dan tombol pemutaran",
+    "continue": "Mulai"
+},
   "libraryBravais": {
     "suiteName": "Dinding Bravais",
     "homeTitle": "Pustaka",
@@ -573,6 +584,7 @@ export default {
       }
     },
     "commands": {
+      "settings-display-scale": {"title":"Skala antarmuka","description":"Sesuaikan ukuran antarmuka Android"},
       "settings-ponder-hints": { "title": "Petunjuk tutorial Ponder", "description": "Atur kapan petunjuk tahan G muncul" },
       "ponder-hints-always": { "title": "Petunjuk Ponder: selalu tampilkan", "description": "Tampilkan petunjuk tahan G pada setiap kontrol yang bisa dipelajari" },
       "ponder-hints-unseen": { "title": "Petunjuk Ponder: hanya yang belum dilihat", "description": "Berhenti memberi petunjuk setelah tutorialnya ditonton" },

@@ -3,6 +3,8 @@
 exports[`store contract > keeps every localStorage key the stores read or write 1`] = `
 [
   "active_online_provider_id",
+  "android_display_scale_percent",
+  "android_display_scale_setup_complete",
   "audio_output_device_id",
   "auto_hide_player_chrome",
   "background_opacity",

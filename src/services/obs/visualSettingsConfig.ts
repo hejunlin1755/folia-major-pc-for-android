@@ -5,6 +5,7 @@ import { useVisualizerSettingsStore } from '../../stores/useVisualizerSettingsSt
 import { useVisualizerAssetStore } from '../../stores/useVisualizerAssetStore';
 import { useTypographySettingsStore } from '../../stores/useTypographySettingsStore';
 import { useThemeSettingsStore } from '../../stores/useThemeSettingsStore';
+import { useDisplayScaleStore } from '../../stores/useDisplayScaleStore';
 import { useStageSettingsStore } from '../../stores/useStageSettingsStore';
 import { useLibraryWallLookStore } from '../../stores/useLibraryWallLookStore';
 
@@ -29,6 +30,7 @@ export function buildVisualSettingsConfig(): Record<string, unknown> {
     songThemeAutoGenerateEnabled,
     themeGenerationSource: readStoredThemeGenerationSource(),
     followSystemTheme: storeThemeSettings.followSystemTheme,
+    displayScale: useDisplayScaleStore.getState().displayScale,
     visualizerMode: storeVisualizer.visualizerMode,
     randomVisualizerModePerSong: storeVisualizer.randomVisualizerModePerSong,
     visualizerBackgroundMode: storeVisualizer.visualizerBackgroundMode,

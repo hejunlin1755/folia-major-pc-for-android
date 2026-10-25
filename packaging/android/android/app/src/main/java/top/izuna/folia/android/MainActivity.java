@@ -46,7 +46,8 @@ public class MainActivity extends BridgeActivity {
                 int top = Math.max(cutout.top, bars.top);
                 int bottom = Math.max(cutout.bottom, Math.max(bars.bottom, gestures.bottom));
                 float density = getResources().getDisplayMetrics().density;
-                bridge.getWebView().evaluateJavascript("document.documentElement.style.setProperty('--folia-native-safe-top','" + top / density + "px');document.documentElement.style.setProperty('--folia-native-safe-left','" + Math.max(cutout.left, bars.left) / density + "px');document.documentElement.style.setProperty('--folia-native-safe-right','" + Math.max(cutout.right, bars.right) / density + "px');document.documentElement.style.setProperty('--folia-native-safe-bottom','" + (safe.bottom > 0 ? 0 : bottom / density) + "px');void 0;", null);
+                // Publish unscaled window metrics; the page converts safe distances to its chosen layout scale.
+                bridge.getWebView().evaluateJavascript("window.__foliaAndroidViewport={width:" + bridge.getWebView().getWidth() / density + ",top:" + top / density + ",left:" + Math.max(cutout.left, bars.left) / density + ",right:" + Math.max(cutout.right, bars.right) / density + ",bottom:" + (safe.bottom > 0 ? 0 : bottom / density) + "};window.dispatchEvent(new Event('folia-android-viewport'));void 0;", null);
             }
             return WindowInsetsCompat.CONSUMED;
         });
@@ -65,7 +66,12 @@ public class MainActivity extends BridgeActivity {
             }
         });
         bridge.getWebView().setBackgroundColor(BACKGROUND);
+        bridge.getWebView().getSettings().setUseWideViewPort(true);
+        bridge.getWebView().getSettings().setLoadWithOverviewMode(true);
         bridge.getWebView().setOverScrollMode(View.OVER_SCROLL_NEVER);
+        bridge.getWebView().addOnLayoutChangeListener((view, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            if (right - left != oldRight - oldLeft || bottom - top != oldBottom - oldTop) ViewCompat.requestApplyInsets(content);
+        });
         if (Build.VERSION.SDK_INT >= 26) bridge.getWebView().setRendererPriorityPolicy(WebView.RENDERER_PRIORITY_IMPORTANT, false);
         AndroidWebAssets webAssets = new AndroidWebAssets(this);
         bridge.setWebViewClient(new BridgeWebViewClient(bridge) {

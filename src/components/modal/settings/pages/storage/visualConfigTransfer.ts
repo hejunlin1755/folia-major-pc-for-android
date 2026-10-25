@@ -3,6 +3,7 @@ import { importFoliumParams, snapshotFoliumParams } from '../../../../../mods/pa
 import { buildVisualSettingsConfig } from '../../../../../services/obs/visualSettingsConfig';
 import { isThemeGenerationSource, type ThemeGenerationSource } from '../../../../../services/themePreferences';
 import { useLibraryWallLookStore } from '../../../../../stores/useLibraryWallLookStore';
+import { useDisplayScaleStore } from '../../../../../stores/useDisplayScaleStore';
 import { useStageSettingsStore } from '../../../../../stores/useStageSettingsStore';
 import { useThemeSettingsStore } from '../../../../../stores/useThemeSettingsStore';
 import { useTypographySettingsStore } from '../../../../../stores/useTypographySettingsStore';
@@ -100,6 +101,7 @@ export const planConfigImport = (text: string, theme: ConfigThemeControls): { co
  */
 export const applyImportedConfig = (config: any, keys: string[], theme: ConfigThemeControls): void => {
     const has = (key: string) => keys.includes(key);
+    if (has('displayScale')) useDisplayScaleStore.getState().setDisplayScale(config.displayScale);
     const storeVisualizer = useVisualizerSettingsStore.getState();
     const storeTypographySettings = useTypographySettingsStore.getState();
     const storeThemeSettings = useThemeSettingsStore.getState();
