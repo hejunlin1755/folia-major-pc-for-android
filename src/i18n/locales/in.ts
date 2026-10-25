@@ -7,8 +7,8 @@ export default {
     "reset": "Atur ulang 100%",
     "apply": "Terapkan skala",
     "current": "Skala saat ini: {{value}}%",
-    "welcome": "Pilih ukuran antarmuka",
-    "intro": "Atur ukuran yang nyaman sebelum mulai. Ubah lagi di Pengaturan → Tampilan → Skala antarmuka.",
+    "welcome": "Sesuaikan tampilan",
+    "intro": "Atur ukuran antarmuka dengan penggeser. Anda dapat mengubahnya lagi di Pengaturan.",
     "sample": "Pratinjau teks dan tombol pemutaran",
     "continue": "Mulai"
 },

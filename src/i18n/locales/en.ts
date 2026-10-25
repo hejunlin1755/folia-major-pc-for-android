@@ -7,8 +7,8 @@ export default {
     "reset": "Reset to 100%",
     "apply": "Apply scale",
     "current": "Current scale: {{value}}%",
-    "welcome": "Choose your interface size",
-    "intro": "Find a comfortable size before you start. Change it later in Settings → Appearance → Interface scale.",
+    "welcome": "Find your fit",
+    "intro": "Adjust the interface size with the slider. You can change it later in Settings.",
     "sample": "Text and playback button preview",
     "continue": "Get started"
 },

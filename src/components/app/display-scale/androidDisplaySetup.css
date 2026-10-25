@@ -1,11 +1,11 @@
 /* Keep the entry controls reachable at every scale, orientation and display cutout. */
 .android-display-setup {
     zoom: var(--folia-display-inverse-scale, 1);
-    width: min(440px, calc((100vw - var(--folia-native-safe-left, 0px) - var(--folia-native-safe-right, 0px)) * var(--folia-display-scale, 1) - 32px));
+    width: min(380px, calc((100vw - var(--folia-native-safe-left, 0px) - var(--folia-native-safe-right, 0px)) * var(--folia-display-scale, 1) - 32px));
     max-width: none;
     max-height: calc((100dvh - var(--folia-native-safe-top, 0px) - var(--folia-native-safe-bottom, 0px)) * var(--folia-display-scale, 1) - 32px);
     margin: auto;
     overflow-y: auto;
     overscroll-behavior: contain;
 }
-.android-display-setup::backdrop { background: rgb(0 0 0 / 72%); }
+.android-display-setup::backdrop { background: rgb(0 0 0 / 56%); backdrop-filter: blur(12px); }
