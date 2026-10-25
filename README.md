@@ -12,22 +12,22 @@ Folia Android 是面向手机和平板的 Folia 社区安卓移植。**最大的
 
 **界面缩放滑杆**：首次进入可选 35%～150%，设置中可随时修改。
 
-<img src="img/android-display-scale.png" alt="Folia 首次进入的界面缩放滑杆" width="260" /> <img src="img/android-display-scale-settings.png" alt="Folia 设置页的界面缩放滑杆" width="260" />
+<img src="img/android-display-scale.png" alt="Folia 首次进入的界面缩放滑杆" width="160" /> <img src="img/android-display-scale-settings.png" alt="Folia 设置页的界面缩放滑杆" width="160" />
 
 **系统锁屏播放控制**：显示歌名、歌手和封面，可暂停、恢复、切歌及调整进度。
 
-<img src="img/android-lockscreen-controls.png" alt="Folia 安卓版在系统锁屏中显示歌曲封面与媒体播放控制" width="260" />
+<img src="img/android-lockscreen-controls.png" alt="Folia 安卓版在系统锁屏中显示歌曲封面与媒体播放控制" width="160" />
 
 **手机横屏搜索**：搜索框与来源切换并排显示，紧凑列表为歌曲结果留出空间。
 
-<img src="img/android-landscape-search.png" alt="Folia 安卓版的手机横屏搜索布局" width="800" />
+<img src="img/android-landscape-search.png" alt="Folia 安卓版的手机横屏搜索布局" width="520" />
 
 ---
 
 以下保留上游项目介绍、桌面版和 Web 版资料。
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/b5d0e863-48be-497b-b0e9-4bd8d8ce9bf0" alt="Folia" width="100%" />
+  <img src="https://github.com/user-attachments/assets/b5d0e863-48be-497b-b0e9-4bd8d8ce9bf0" alt="Folia" width="520" />
 </p>
 
 <div align="center">
@@ -78,7 +78,7 @@ Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，
 
 ## 展示
 
-![visualizer](./img/visualizer.png)
+<img src="./img/visualizer.png" alt="Folia 歌词可视化预览" width="520" />
 
 ### 演示视频
 
@@ -93,10 +93,10 @@ https://github.com/user-attachments/assets/704f195a-2194-434b-86e8-8f36290e5cc4
 <table>
   <tr>
     <td width="50%">
-      <img src="./img/preview-fume.png" alt="Fume 主题预览" />
+      <img src="./img/preview-fume.png" alt="Fume 主题预览" width="240" />
     </td>
     <td width="50%">
-      <img src="./img/preview-lumi.png" alt="Lumi 主题预览" />
+      <img src="./img/preview-lumi.png" alt="Lumi 主题预览" width="240" />
     </td>
   </tr>
   <tr>
@@ -105,10 +105,10 @@ https://github.com/user-attachments/assets/704f195a-2194-434b-86e8-8f36290e5cc4
   </tr>
   <tr>
     <td width="50%">
-      <img src="./img/preview-cad.png" alt="Cad 主题预览" />
+      <img src="./img/preview-cad.png" alt="Cad 主题预览" width="240" />
     </td>
     <td width="50%">
-      <img src="./img/preview-pat.png" alt="Pat 主题预览" />
+      <img src="./img/preview-pat.png" alt="Pat 主题预览" width="240" />
     </td>
   </tr>
   <tr>
@@ -117,10 +117,10 @@ https://github.com/user-attachments/assets/704f195a-2194-434b-86e8-8f36290e5cc4
   </tr>
   <tr>
     <td width="50%">
-      <img src="./img/preview-cappella.jpg" alt="群唱 主题预览" />
+      <img src="./img/preview-cappella.jpg" alt="群唱 主题预览" width="240" />
     </td>
     <td width="50%">
-      <img src="./img/preview-tilt.png" alt="Tilt 主题预览" />
+      <img src="./img/preview-tilt.png" alt="Tilt 主题预览" width="240" />
     </td>
   </tr>
   <tr>
@@ -129,10 +129,10 @@ https://github.com/user-attachments/assets/704f195a-2194-434b-86e8-8f36290e5cc4
   </tr>
     <tr>
     <td width="50%">
-      <img src="./img/preview-diorama.png" alt="镜台 主题预览" />
+      <img src="./img/preview-diorama.png" alt="镜台 主题预览" width="240" />
     </td>
     <td width="50%">
-      <img src="./img/preview-pendolo.png" alt="时计 主题预览" />
+      <img src="./img/preview-pendolo.png" alt="时计 主题预览" width="240" />
     </td>
   </tr>
   <tr>
