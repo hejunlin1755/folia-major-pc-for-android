@@ -5,7 +5,7 @@ const crypto = require('node:crypto');
 const { pipeline } = require('node:stream/promises');
 const { Readable } = require('node:stream');
 
-// Three pinned provider APIs run inside the app; only its authenticated loopback gateway is exposed.
+// Pinned provider APIs run inside the app; only its authenticated loopback gateway is exposed.
 function json(res, status, body) {
     res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
     res.end(JSON.stringify(body));
@@ -29,10 +29,11 @@ function allowedProxyTarget(value) {
     return url;
 }
 
-async function proxy(req, res, url) {
+async function proxy(req, res, url, extra) {
     const media = url.pathname === '/api/music-media';
-    let target = allowedProxyTarget(url.searchParams.get('url'));
-    if (media && !target.hostname.endsWith('.kugou.com')) throw new Error('Media target is not allowed');
+    const validate = value => extra?.mediaAllowed(value) ? new URL(value) : allowedProxyTarget(value);
+    let target = validate(url.searchParams.get('url'));
+    if (media && !target.hostname.endsWith('.kugou.com') && !extra?.mediaAllowed(target.href)) throw new Error('Media target is not allowed');
     const headers = {};
     for (const [key, value] of Object.entries(req.headers)) {
         if (!['host', 'origin', 'referer', 'cookie', 'authorization', 'x-folia-local-auth', 'connection'].includes(key)) headers[key] = value;
@@ -41,8 +42,10 @@ async function proxy(req, res, url) {
     for (let redirects = 0; redirects < 5; redirects++) {
         const response = await fetch(target, { headers, redirect: 'manual', signal: AbortSignal.timeout(media ? 180000 : 25000) });
         if ([301, 302, 303, 307, 308].includes(response.status)) {
-            target = allowedProxyTarget(new URL(response.headers.get('location'), target).href);
-            if (media && !target.hostname.endsWith('.kugou.com')) throw new Error('Media redirect is not allowed');
+            const redirected = new URL(response.headers.get('location'), target).href;
+            extra?.followMediaRedirect(target.href, redirected);
+            target = validate(redirected);
+            if (media && !target.hostname.endsWith('.kugou.com') && !extra?.mediaAllowed(target.href)) throw new Error('Media redirect is not allowed');
             await response.body?.cancel();
             continue;
         }
@@ -93,7 +96,8 @@ function createProviders(stateDir) {
     else process.env.NODE_ENV = previousEnv;
     const { api: netease, prepare: prepareNetease } = require('./netease.cjs').createNetease(stateDir);
     const kugou = require('./kugou.cjs').createKugou(stateDir);
-    return { qqApp, netease, kugou, prepareNetease };
+    const extra = require('./extraPlatforms.cjs').createExtraPlatforms(stateDir);
+    return { qqApp, netease, kugou, prepareNetease, extra };
 }
 
 async function createGateway({ stateDir, token, providers = createProviders(stateDir) }) {
@@ -102,8 +106,14 @@ async function createGateway({ stateDir, token, providers = createProviders(stat
         if (!constantEqual(req.headers['x-folia-local-auth'], token)) return json(res, 403, { error: 'Local authentication required' });
         try {
             const url = new URL(req.url, 'http://127.0.0.1');
-            if (url.pathname === '/health') return json(res, 200, { ready: true, node: process.version, providers: ['netease', 'qq', 'kugou'] });
-            if (['/api/lyric-proxy', '/api/music-media'].includes(url.pathname)) return await proxy(req, res, url);
+            if (url.pathname === '/health') return json(res, 200, { ready: true, node: process.version, providers: ['netease', 'qq', 'kugou', 'bodian', 'qishui'] });
+            if (['/api/lyric-proxy', '/api/music-media'].includes(url.pathname)) return await proxy(req, res, url, providers.extra);
+            const bridge = /^\/(qishui|bodian)\/bridge$/.exec(url.pathname);
+            if (bridge) {
+                if (req.method !== 'POST') return json(res, 405, { error: 'POST required' });
+                const body = await readBody(req);
+                return json(res, 200, await providers.extra.request(bridge[1], body.operation, body.params || {}));
+            }
             if (url.pathname.startsWith('/qq/')) {
                 req.url = req.url.slice(3);
                 providers.qqApp(req, res);

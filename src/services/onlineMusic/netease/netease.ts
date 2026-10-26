@@ -1,4 +1,4 @@
-import { getAndroidMusicApiBase, waitForAndroidMusicRuntime } from '../../androidMusicRuntime';
+import { getAndroidMusicApiBase, isAndroidMusicRuntime, waitForAndroidMusicRuntime } from '../../androidMusicRuntime';
 import { NoCopyrightRecommendation, SongPrivilege, SongResult } from "../../../types";
 import { readProviderSessionValue, removeProviderSessionValue, writeProviderSessionValue } from '../providerStorage';
 import { OnlineProviderError } from '../../../types/onlineMusic';
@@ -134,7 +134,7 @@ const waitForNeteasePort = async (bridge: any): Promise<{ port: number | 'offlin
 };
 
 const getApiBase = async () => {
-  await waitForAndroidMusicRuntime();
+  if (isAndroidMusicRuntime()) await waitForAndroidMusicRuntime();
   // Deliberately uncached under Electron: the local server starts asynchronously and can be
   // restarted from the login modal on a fresh port. Caching the first answer used to pin the
   // renderer to the dead default port for the rest of the session, so every online feature kept
@@ -169,6 +169,17 @@ const getApiBase = async () => {
     new Error("Failed to access environment variables for API base. Please configure VITE_NETEASE_API_BASE."),
     { code: NETEASE_API_BASE_MISSING },
   );
+};
+
+// A signal that aborts when either does: the caller's own (`options.signal`) and the time limit's.
+const eitherSignal = (caller: AbortSignal | null | undefined, limit: AbortSignal): AbortSignal => {
+  if (!caller) return limit;
+  if (caller.aborted) return caller;
+  const controller = new AbortController();
+  const abort = (from: AbortSignal) => () => controller.abort(from.reason);
+  caller.addEventListener('abort', abort(caller), { once: true });
+  limit.addEventListener('abort', abort(limit), { once: true });
+  return controller.signal;
 };
 
 // `limit`: the time limit the request gets, which starts when the request is sent: the wait for the
@@ -239,7 +250,7 @@ const fetchWithCreds = async (endpoint: string, options: RequestInit = {}, limit
   const send = async (signal?: AbortSignal) => {
     let res: Response;
     try {
-      res = await fetch(finalUrl, { ...defaultOptions, credentials: 'include', ...(signal ? { signal } : {}) });
+      res = await fetch(finalUrl, { ...defaultOptions, credentials: 'include', ...(signal ? { signal: eitherSignal(options.signal, signal) } : {}) });
     } catch (error) {
       // The API itself could not be reached (the local backend has exited, a remote API is down): not a
       // failure of NetEase's. The error names the route, keeps the fetch's own error as its cause, and
@@ -273,6 +284,15 @@ const fetchWithCreds = async (endpoint: string, options: RequestInit = {}, limit
 
   return data;
 };
+
+/**
+ * One request of the platform's raw endpoints (neteaseRaw.ts): `route` is the local backend's route
+ * (`/user/record`), `query` the parameters already written as a query string. The session is added like
+ * for every other request; it gets the limit of online requests, and `signal` aborts it as well.
+ */
+export const requestNeteaseRoute = (route: string, query: string, signal: AbortSignal) => (
+  fetchWithCreds(query ? `${route}?${query}` : route, { signal }, 'online')
+);
 
 const toHttps = (url?: unknown) => {
   if (typeof url !== 'string' || !url) return '';

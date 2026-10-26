@@ -95,6 +95,7 @@ export const useBravaisFocus = ({
             view: frame.view,
             metrics: BRAVAIS_METRICS,
             anchorX: frame.anchorX,
+            anchorY: frame.anchorY,
             seamWidth,
             pad: BRAVAIS_REVEAL_PAD_PX,
             bottomInset: getBottomInset(),

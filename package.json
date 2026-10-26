@@ -8,7 +8,7 @@
     "email": "chthollyphile@users.noreply.github.com"
   },
   "private": true,
-  "version": "0.7.21",
+  "version": "0.7.22",
   "license": "AGPL-3.0",
   "type": "module",
   "main": "electron/main.cjs",
@@ -156,6 +156,10 @@
         {
           "from": "build/koffi/darwin_${arch}",
           "to": "koffi/darwin_${arch}"
+        },
+        {
+          "from": "build/mac-helper/darwin-${arch}",
+          "to": "."
         }
       ],
       "target": [
@@ -242,6 +246,7 @@
     "koffi": "^3.3.1",
     "kugoumusicapi": "https://github.com/MakcRe/KuGouMusicApi/archive/refs/tags/v1.6.0.tar.gz",
     "music-metadata": "^11.16.1",
+    "qishui-music-api": "0.2.2",
     "ws": "^8.21.3",
     "youtubei.js": "18.1.0"
   },

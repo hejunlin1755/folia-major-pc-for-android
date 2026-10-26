@@ -3,6 +3,16 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 // A real Android API request carries method, body and session header through the native bridge; Web requests stay unchanged.
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.resetModules(); });
 describe('Android music request bridge', () => {
+    it('keeps typed operations inside the native bridge and proxies issued audio', async () => {
+        vi.stubGlobal('Capacitor', { getPlatform: () => 'android', nativePromise: vi.fn(async () => ({ ready: true })) });
+        vi.stubGlobal('location', { origin: 'https://localhost' });
+        const send = vi.fn(async () => new Response(JSON.stringify({ ok: true, data: { url: 'https://issued.example/song.mp3' } })));
+        vi.stubGlobal('fetch', send);
+        const runtime = await import('../../../src/services/androidMusicRuntime');
+        const answer = await runtime.requestAndroidMusicOperation<{ ok: boolean; data: { url: string } }>('qishui', 'audio', { id: 'fixture' });
+        expect(send).toHaveBeenCalledWith('/android-music/qishui/bridge', expect.objectContaining({ method: 'POST', body: JSON.stringify({ operation: 'audio', params: { id: 'fixture' } }) }));
+        expect(answer.data.url).toBe('https://localhost/api/music-media?url=' + encodeURIComponent('https://issued.example/song.mp3'));
+    });
     it('wraps only supported Android music CDNs while preserving Web URLs', async () => {
         const runtime = await import('../../../src/services/androidMusicRuntime');
         const source = 'http://fs.test.kugou.com/song.mp3?key=opaque';

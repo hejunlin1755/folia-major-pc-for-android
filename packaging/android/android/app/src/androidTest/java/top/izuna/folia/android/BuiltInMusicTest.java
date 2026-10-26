@@ -27,7 +27,7 @@ public class BuiltInMusicTest {
                 JSONObject info = new JSONObject(new String(NodeMusicRuntime.readAll(in), StandardCharsets.UTF_8));
                 assertTrue(info.getBoolean("ready"));
                 assertTrue(info.getString("node").startsWith("v24."));
-                assertEquals(3, info.getJSONArray("providers").length());
+                assertEquals(5, info.getJSONArray("providers").length());
             }
         } finally { connection.disconnect(); }
     }
@@ -37,5 +37,15 @@ public class BuiltInMusicTest {
         HttpURLConnection unauthenticated = (HttpURLConnection) new URL("http://127.0.0.1:" + endpoint.port + "/health").openConnection();
         try { unauthenticated.setReadTimeout(5000); assertEquals(403, unauthenticated.getResponseCode()); }
         finally { unauthenticated.disconnect(); }
+    }
+    @Test(timeout = 45000) public void androidTlsCanReachAdditionalPlatformOrigins() throws Exception {
+        for (String origin : new String[] { "https://open.douyin.com/", "https://bd-api.kuwo.cn/" }) {
+            HttpURLConnection connection = (HttpURLConnection) new URL(origin).openConnection();
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(10000);
+            connection.setInstanceFollowRedirects(false);
+            try { assertTrue("Android TLS did not receive an HTTP response", connection.getResponseCode() >= 100); }
+            finally { connection.disconnect(); }
+        }
     }
 }

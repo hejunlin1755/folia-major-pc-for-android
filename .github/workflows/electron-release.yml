@@ -22,6 +22,8 @@ concurrency:
 
 jobs:
   validate-release:
+    # Android forks publish APKs separately; desktop/server publishing remains explicitly invokable.
+    if: github.repository == 'chthollyphile/folia-major' || github.event_name == 'workflow_dispatch'
     name: Validate Realeco release metadata
     runs-on: ubuntu-latest
     outputs:

@@ -37,7 +37,7 @@ public class FoliaMusicBackendPlugin extends Plugin {
             HttpURLConnection connection = null;
             try {
                 String path = call.getString("path", "");
-                if (!(path.startsWith("/netease/") || path.startsWith("/qq/") || path.startsWith("/kugou/") || path.equals("/health"))) throw new IllegalArgumentException("Unsupported local route");
+                if (!(path.startsWith("/netease/") || path.startsWith("/qq/") || path.startsWith("/kugou/") || path.equals("/qishui/bridge") || path.equals("/bodian/bridge") || path.equals("/health"))) throw new IllegalArgumentException("Unsupported local route");
                 Map<String, String> headers = new HashMap<>();
                 JSObject rawHeaders = call.getObject("headers", new JSObject());
                 for (Iterator<String> keys = rawHeaders.keys(); keys.hasNext();) { String key = keys.next(); headers.put(key, rawHeaders.getString(key)); }

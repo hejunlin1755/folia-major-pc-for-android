@@ -43,7 +43,8 @@ final class AndroidRuntimeAssets {
     static boolean installed(File directory) {
         for (String file : new String[] { ".complete", "main.cjs",
             "node_modules/@neteasecloudmusicapienhanced/api/package.json",
-            "node_modules/@yakult-green-tea/qq-music-api/package.json", "node_modules/kugoumusicapi/package.json" }) {
+            "node_modules/@yakult-green-tea/qq-music-api/package.json", "node_modules/kugoumusicapi/package.json",
+            "node_modules/bodian-music-api/package.json", "node_modules/qishui-music-api/package.json" }) {
             if (!new File(directory, file).isFile()) return false;
         }
         return true;

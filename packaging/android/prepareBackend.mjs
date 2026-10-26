@@ -44,6 +44,10 @@ function collect(location, prefix = '') {
     }
 }
 collect(backend);
+// Bundle the same maintained bridge/session/media-policy source used by the desktop host.
+for (const id of ['qishui', 'bodian']) for (const name of [id + 'ApiBridge.cjs', 'session.cjs', 'mediaCors.cjs']) {
+    entries['desktop/' + id + '/' + name] = fs.readFileSync(path.resolve(directory, '../../electron', id, name));
+}
 // Fixed ZIP timestamps keep unchanged services reusable across APK upgrades.
 const zip = zipSync(entries, { level: 6, mtime: new Date(2000, 0, 1, 0, 0, 0) });
 const assets = path.join(directory, 'android/app/src/main/assets');

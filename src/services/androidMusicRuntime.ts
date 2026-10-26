@@ -66,3 +66,17 @@ export function installAndroidMusicRuntime(): void {
     };
     void waitForAndroidMusicRuntime().catch(error => console.warn('[AndroidMusic] Built-in service startup failed', error));
 }
+
+// A platform transport can reuse its upstream typed operation protocol through the authenticated bridge.
+export async function requestAndroidMusicOperation<T>(provider: string, operation: string, params: unknown): Promise<T> {
+    await waitForAndroidMusicRuntime();
+    const base = getAndroidMusicApiBase(provider);
+    if (!base) throw new Error(ANDROID_MUSIC_BACKEND_UNAVAILABLE);
+    const response = await fetch(base + '/bridge', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ operation, params }) });
+    if (!response.ok) throw new Error(ANDROID_MUSIC_BACKEND_UNAVAILABLE);
+    const result = await response.json();
+    if (operation === 'audio' && result.ok && typeof result.data?.url === 'string') {
+        result.data.url = location.origin + '/api/music-media?url=' + encodeURIComponent(result.data.url);
+    }
+    return result as T;
+}

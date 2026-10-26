@@ -25,6 +25,8 @@ env:
 
 jobs:
   prepare:
+    # Android forks publish APKs separately; desktop/server publishing remains explicitly invokable.
+    if: github.repository == 'chthollyphile/folia-major' || github.event_name == 'workflow_dispatch'
     name: Validate Docker stack release
     runs-on: ubuntu-latest
     outputs:

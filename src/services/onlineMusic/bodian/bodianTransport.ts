@@ -1,3 +1,4 @@
+import { isAndroidMusicRuntime, requestAndroidMusicOperation } from '../../androidMusicRuntime';
 import { OnlineProviderError } from '../../../types/onlineMusic';
 import type { BodianOperation, BodianParams, BodianResult } from 'bodian-music-api';
 
@@ -12,7 +13,7 @@ export const BODIAN_NEEDS_DESKTOP = 'Bodian requires the desktop app';
 export const BODIAN_BRIDGE_FAILED = 'Bodian desktop request failed';
 
 export const getBodianTransportAvailability = () => (
-    typeof window !== 'undefined' && typeof window.electron?.bodianRequest === 'function'
+    isAndroidMusicRuntime() || (typeof window !== 'undefined' && typeof window.electron?.bodianRequest === 'function')
         ? { configured: true } as const
         : { configured: false, reason: 'runtime-unavailable' } as const
 );
@@ -25,7 +26,7 @@ export async function requestBodian<T = unknown>(operation: BodianOperation, par
     // Omni consumers request 150/1000-row batches; Bodian serves at most 100 and returns its own cursor.
     const boundedParams = Number.isSafeInteger(params.limit) && Number(params.limit) > 100
         ? { ...params, limit: 100 } : params;
-    try { result = await window.electron!.bodianRequest(operation, boundedParams); }
+    try { result = isAndroidMusicRuntime() ? await requestAndroidMusicOperation<BodianBridgeResult>('bodian', operation, boundedParams) : await window.electron!.bodianRequest(operation, boundedParams); }
     catch (error) { throw new OnlineProviderError('network', BODIAN_BRIDGE_FAILED, 'bodian', error); }
     // The package's code and sentence go on as they are: bodianFailure.ts says what they mean.
     if (!result.ok) throw new OnlineProviderError(result.error.code, result.error.message, 'bodian');

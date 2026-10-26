@@ -2,9 +2,13 @@
 
 Folia Android 是面向手机和平板的 Folia 社区安卓移植。**最大的特点是手机独立运行：网易云、酷狗和 QQ 音乐 API 直接内置在 APK 中，无需自行部署服务器、保持电脑开机或填写 API 地址。** 安装后即可在应用内登录和使用在线音乐，并支持原生后台播放、通知栏与锁屏控制、沉浸全屏和系统返回导航。首次进入可通过滑杆选择 **35%～150% 的界面比例**，也可随时在「设置 → 外观 → 界面缩放」调整。
 
-[**下载 Android APK · android.13**](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.21-android.13) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
+[**下载 Android APK · android.14**](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.22-android.14) · [安卓构建说明](packaging/android/README.md) · [上游 Folia](https://github.com/chthollyphile/folia-major)
 
 支持 Android 7 及以上、Android System WebView 120 及以上，安装包包含 ARM64 / ARMv7 / x86_64。在线听歌仍需要联网，会员和版权规则由音乐平台决定。
+
+当前基于上游 **0.7.22**，同步 Hanabi 烟花歌词样式与随机样式池。新增汽水、波点的内置协议桥处于试验阶段：汽水已验证二维码生成；波点接口本轮出现超时，二者的扫码后曲库及播放尚未完成账号实测。Spotify 与 YouTube Music 仍未适配安卓。
+
+与其他社区移植相比，本分支重点是 **35%～150% 自由缩放、手机/平板横竖屏布局，以及随 APK 运行的 Node 协议库**。独立运行和系统媒体控制也有其他移植版实现，功能核对见[社区版本与桌面能力对照](docs/android-comparison.md)。
 
 ## 安卓实测截图
 
@@ -61,7 +65,7 @@ Lyrics Reimagined // 辞曲新境
 
 ## 上游项目简介
 
-Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，支持网易云、酷狗、QQ 音乐、Navidrome 和本地音乐库，桌面端还支持波点音乐、YouTube Music 和 Spotify，通过智能歌词匹配，AI生成配色主题，以及多种全屏歌词动画为用户提供独特的听歌体验。
+Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，支持网易云、酷狗、QQ 音乐、Navidrome 和本地音乐库，桌面端还支持波点音乐、YouTube Music、Spotify 和汽水音乐，通过智能歌词匹配，AI生成配色主题，以及多种全屏歌词动画为用户提供独特的听歌体验。
 
 提供基于Electron的 windows/ macOS/ Linux 桌面端版本与基于 Node.js 的 Web 版本，支持多平台部署。
 
@@ -70,11 +74,11 @@ Folia是一个以全屏沉浸式歌词播放为核心的在线音乐播放器，
 ## 快速下载
 
 > [!TIP]
-> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.21-android.13)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
+> - **Android 安卓独立版**：[下载 APK](https://github.com/hejunlin1755/folia-major-pc-for-android/releases/tag/v0.7.22-android.14)，支持手机内置音乐服务、后台播放、系统媒体控制与沉浸全屏。
 > - **GitHub**：[Latest Release](https://github.com/chthollyphile/folia-major/releases/latest)，提供 Windows / macOS / Linux 全平台安装包。
 > - **网盘**：[夸克网盘](https://pan.quark.cn/s/6e4c6fa3bc6f) · [百度云](https://pan.baidu.com/s/1f0x3g-8PMcNCO-TJ5z1rPw?pwd=flia)（提取码 `flia`），适合国内网络，仅提供 Windows 与 Apple silicon 的正式版安装包。
 >
-> 更多获取方式（Web 部署、Docker、AUR、Flatpak、社区移动版）见下方 [获取方式](#获取方式)。
+> 更多获取方式（Web 部署、Docker、AUR、Flatpak、移动端）见下方 [获取方式](#获取方式)。
 
 ## 展示
 
@@ -199,6 +203,17 @@ Vercel 与 Cloudflare 上的 QQ 音乐不再需要额外部署一个常驻 API �
 > 如果国内网络从 GitHub Releases 下载较慢，可以使用 [夸克网盘](https://pan.quark.cn/s/6e4c6fa3bc6f) 或 [百度云](https://pan.baidu.com/s/1f0x3g-8PMcNCO-TJ5z1rPw?pwd=flia) 下载。网盘链接仅提供 Windows 与 Apple silicon 的正式版安装包.
 
 Linux 包、Wayland / Hyprland 遥控窗和桌面端细节见 [技术与开发说明](docs/technical.md)。
+
+### 移动端
+
+| 方式 | 说明 |
+| --- | --- |
+| **PWA（推荐）** | 部署 Web 版本或自托管版本后，在 Chrome for Android / iOS Safari 中将网页添加到主屏幕，即可作为 PWA 应用使用。 |
+| **社区移植版（Android）** | [maimai993/folia-sonnet](https://github.com/maimai993/folia-sonnet) · [whycfawa/folia-android](https://github.com/whycfawa/folia-android) |
+| **自行打包（Android）** | 有一定技术基础的用户可以用 Capacitor 将 Web 版本打包为可安装的 APK，参考示范仓库 [chthollyphile/folia-sonnet](https://github.com/chthollyphile/folia-sonnet)。 |
+
+> [!NOTE]
+> 社区移植版均为第三方项目，由社区自发维护，功能会与官方 PC 版存在差异。使用中遇到问题请反馈到对应的社区仓库。
 
 ## 文档与开发
 
